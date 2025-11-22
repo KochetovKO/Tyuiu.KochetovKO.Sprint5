@@ -10,7 +10,7 @@ namespace Tyuiu.KochetovKO.Sprint5.Task0.V18.Lib
             double y = x / (Math.Sqrt(x * x + x));
             y = Math.Round(y, 3);
             File.WriteAllText(path, Convert.ToString(y));
-            return path;
+            return path; 
         }
     }
 }
