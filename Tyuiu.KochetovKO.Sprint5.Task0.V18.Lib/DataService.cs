@@ -9,7 +9,7 @@ namespace Tyuiu.KochetovKO.Sprint5.Task0.V18.Lib
         public string SaveToFileTextData(int x)
         {
             string path = $@"{Directory.GetCurrentDirectory()}\OutPutFileTask0.txt";
-            double y = (double)x / (Math.Sqrt(x * x + x));
+            double y = (double)x / (Math.Sqrt(x * x + x)); 
             y = Math.Round(y, 3);
             File.WriteAllText(path, Convert.ToString(y));
             return path;
