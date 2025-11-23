@@ -12,7 +12,7 @@ namespace Tyuiu.KochetovKO.Sprint5.Task3.V19.Lib
            
             double y;
            
-            y = (2 * x * x * x - 1) / Math.Sqrt(x * x - 2);
+            y = (2 * x * x - 1) / Math.Sqrt(x * x - 2);
 
             y = Math.Round(y, 2);
 
@@ -21,6 +21,27 @@ namespace Tyuiu.KochetovKO.Sprint5.Task3.V19.Lib
                 writer.Write(BitConverter.GetBytes(y));
             }
 
+            return path;
+        }
+    }
+}
+using System.Text;
+using tyuiu.cources.programming.interfaces.Sprint5;
+namespace Tyuiu.KhisamutdinovaPR.Sprint5.Task3.V30.Lib
+{
+    public class DataService : ISprint5Task3V30
+
+    {
+        public string SaveToFileTextData(int x)
+        {
+            string path = Path.GetTempFileName();
+
+            double y = Math.Round((Math.Pow(x, 3) - 1) / (4 * x * x), 3);
+
+            using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.OpenOrCreate), Encoding.UTF8))
+            {
+                writer.Write(BitConverter.GetBytes(y));
+            }
             return path;
         }
     }
