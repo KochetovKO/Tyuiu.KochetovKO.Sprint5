@@ -5,7 +5,7 @@ namespace Tyuiu.KochetovKO.Sprint5.Task1.V5.Lib
     public class DataService : ISprint5Task1V5
     {
         public string SaveToFileTextData(int startValue, int stopValue)
-        {
+        { 
             string path = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
 
             FileInfo fileinfo = new FileInfo(path);
