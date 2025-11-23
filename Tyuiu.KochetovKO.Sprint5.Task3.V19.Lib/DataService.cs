@@ -9,7 +9,7 @@ namespace Tyuiu.KochetovKO.Sprint5.Task3.V19.Lib
         public string SaveToFileTextData(int x)
         {
 
-            string path = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
+            string path = Path.ChangeExtension(Path.GetTempFileName(), ".bin");
             
             double y;
            
