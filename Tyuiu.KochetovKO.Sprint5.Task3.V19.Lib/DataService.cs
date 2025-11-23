@@ -15,7 +15,7 @@ namespace Tyuiu.KochetovKO.Sprint5.Task3.V19.Lib
            
             y = (2 * x * x - 1) / Math.Sqrt(x * x - 2);
 
-            y = Math.Round(y, 2);
+            y = Math.Round(y, 3);
 
             using (BinaryWriter writer = new BinaryWriter(File.Open(path, FileMode.OpenOrCreate), Encoding.UTF8))
             {
