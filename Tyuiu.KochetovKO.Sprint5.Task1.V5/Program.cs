@@ -1,9 +1,4 @@
-﻿using System.IO;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using Tyuiu.KochetovKO.Sprint5.Task1.V5.Lib;
 
 namespace Tyuiu.KochetovKO.Sprint5.Task1.V5
@@ -12,35 +7,49 @@ namespace Tyuiu.KochetovKO.Sprint5.Task1.V5
     {
         static void Main(string[] args)
         {
-            DataService ds = new DataService();
-            Console.Title = "Спринт 5 | выполнил: Кочетов К.О. | ИСПБ-25-1";
-            Console.WriteLine("******************************************************************************");
-            Console.WriteLine("Спринт №5                                                                     ");
-            Console.WriteLine("Тема: Класс File. Запись набора данных в текстовый файл                       ");
-            Console.WriteLine("******************************************************************************");
-            Console.WriteLine("Задание №1                                                                    ");
-            Console.WriteLine("Вариант №5                                                                    ");
-            Console.WriteLine("Выполнил: Кочетов Кирилл Олегович | ИСПБ-25-1                                 ");
-            Console.WriteLine("******************************************************************************");
-            Console.WriteLine("ИСХОДНЫЕ ДАННЫЕ :                                                             ");
-            Console.WriteLine("******************************************************************************");
+            Console.Title = "Спринт #5 | Выполнил: Кочетов К. О. | ИСПб-25-1";
+            Console.WriteLine("***************************************************************************");
+            Console.WriteLine("* Спринт #5                                                               *");
+            Console.WriteLine("* Тема: Класс File. Запись набора данных в текстовый файл                *");
+            Console.WriteLine("* Задание #1                                                              *");
+            Console.WriteLine("* Вариант #5                                                              *");
+            Console.WriteLine("* Выполнил: Кочентов Кирилл Олегович | ИСПб-25-1                         *");
+            Console.WriteLine("***************************************************************************");
+            Console.WriteLine("* УСЛОВИЕ:                                                                *");
+            Console.WriteLine("***************************************************************************");
+            Console.WriteLine("* ИСХОДНЫЕ ДАННЫЕ:                                                        *");
+            Console.WriteLine("***************************************************************************");
 
             int startValue = -5;
             int stopValue = 5;
 
-            Console.WriteLine("startValue = " + startValue);
-            Console.WriteLine("stopValue = " + stopValue);
+            Console.WriteLine($"Старт шага = {startValue}");
+            Console.WriteLine($"Конец шага = {stopValue}");
 
+            Console.WriteLine();
+            Console.WriteLine("***************************************************************************");
+            Console.WriteLine("* РЕЗУЛЬТАТ:                                                              *");
+            Console.WriteLine("***************************************************************************");
 
-            Console.WriteLine("*******************************************************************************");
-            Console.WriteLine("РЕЗУЛЬТАТ:                                                                     ");
-            Console.WriteLine("*******************************************************************************");
+            DataService ds = new DataService();
 
-            string res = ds.SaveToFileTextData(startValue, stopValue);
+            try
+            {
+                string resultPath = ds.SaveToFileTextData(startValue, stopValue);
 
+                Console.WriteLine();
+                Console.WriteLine("Данные из файла:");
+                if (File.Exists(resultPath))
+                {
+                    string[] fileLines = File.ReadAllLines(resultPath);
+                    Console.WriteLine(string.Join(Environment.NewLine, fileLines));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Произошла ошибка: {ex.Message}");
+            }
 
-            Console.WriteLine("Файл : " + res);
-            Console.WriteLine("Создан!");
             Console.ReadKey();
         }
     }
