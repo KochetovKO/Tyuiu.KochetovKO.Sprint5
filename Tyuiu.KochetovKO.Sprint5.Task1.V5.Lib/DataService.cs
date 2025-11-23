@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using System.Globalization;
 using tyuiu.cources.programming.interfaces.Sprint5;
 
 namespace Tyuiu.KochetovKO.Sprint5.Task1.V5.Lib
@@ -10,41 +9,120 @@ namespace Tyuiu.KochetovKO.Sprint5.Task1.V5.Lib
     {
         public string SaveToFileTextData(int startValue, int stopValue)
         {
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "OutPutFileTask1.txt");
+            string path = "";
 
-            // Создаем директорию если не существует
-            string directory = Path.GetDirectoryName(path);
-            if (!Directory.Exists(directory))
+            try
             {
-                Directory.CreateDirectory(directory);
-            }
+                // Пробуем разные расположения для файла
+                path = GetSafeFilePath();
 
-            // Очищаем файл если существует
-            if (File.Exists(path))
-            {
-                File.Delete(path);
-            }
+                Console.WriteLine($"Пытаемся сохранить файл по пути: {path}");
 
-            StringBuilder fileContent = new StringBuilder();
-
-            for (int x = startValue; x <= stopValue; x++)
-            {
-                double y = CalculateFunction(x);
-                string strY = FormatNumber(y);
-
-                // Добавляем в StringBuilder для файла
-                if (x != stopValue)
+                // Очищаем файл если существует
+                if (File.Exists(path))
                 {
-                    fileContent.AppendLine(strY);
+                    File.Delete(path);
                 }
-                else
+
+                using (StreamWriter writer = new StreamWriter(path, false, Encoding.UTF8))
                 {
-                    fileContent.Append(strY);
+                    for (int x = startValue; x <= stopValue; x++)
+                    {
+                        double y = CalculateFunction(x);
+                        string strY = y.ToString("F2");
+
+                        if (x != stopValue)
+                            writer.WriteLine(strY);
+                        else
+                            writer.Write(strY);
+                    }
                 }
+
+                Console.WriteLine($"Файл успешно создан: {path}");
+                return path;
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                Console.WriteLine($"Ошибка доступа: {ex.Message}");
+                // Пробуем альтернативное расположение
+                return SaveToAlternativeLocation(startValue, stopValue);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Общая ошибка: {ex.Message}");
+                return SaveToAlternativeLocation(startValue, stopValue);
+            }
+        }
+
+        private string GetSafeFilePath()
+        {
+            // Пробуем разные расположения в порядке приоритета
+            string[] possiblePaths = {
+                Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "OutPutFileTask1.txt"),
+                Path.Combine(Path.GetTempPath(), "OutPutFileTask1.txt"),
+                Path.Combine(Directory.GetCurrentDirectory(), "OutPutFileTask1.txt"),
+                "OutPutFileTask1.txt" // Просто в текущей рабочей директории
+            };
+
+            foreach (string path in possiblePaths)
+            {
+                string directory = Path.GetDirectoryName(path);
+                if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
+                {
+                    try
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+                    catch
+                    {
+                        continue; // Пробуем следующий путь
+                    }
+                }
+
+                // Проверяем возможность записи
+                if (CanWriteToPath(path))
+                    return path;
             }
 
-            // Записываем все содержимое одним вызовом
-            File.WriteAllText(path, fileContent.ToString(), Encoding.UTF8);
+            throw new InvalidOperationException("Не удалось найти доступное для записи расположение");
+        }
+
+        private bool CanWriteToPath(string path)
+        {
+            try
+            {
+                using (var fs = File.Create(Path.Combine(Path.GetDirectoryName(path),
+                       Path.GetRandomFileName()), 1, FileOptions.DeleteOnClose))
+                { }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private string SaveToAlternativeLocation(int startValue, int stopValue)
+        {
+            // Используем временную директорию, которая всегда доступна
+            string tempPath = Path.GetTempPath();
+            string path = Path.Combine(tempPath, "OutPutFileTask1.txt");
+
+            Console.WriteLine($"Используем временную директорию: {path}");
+
+            using (StreamWriter writer = new StreamWriter(path, false, Encoding.UTF8))
+            {
+                for (int x = startValue; x <= stopValue; x++)
+                {
+                    double y = CalculateFunction(x);
+                    string strY = y.ToString("F2");
+
+                    if (x != stopValue)
+                        writer.WriteLine(strY);
+                    else
+                        writer.Write(strY);
+                }
+            }
 
             return path;
         }
@@ -56,6 +134,7 @@ namespace Tyuiu.KochetovKO.Sprint5.Task1.V5.Lib
 
             if (Math.Abs(denominator) < 0.0001)
             {
+                Console.WriteLine($"Внимание: деление на ноль при x = {x}, возвращаем 0");
                 return 0;
             }
 
@@ -64,43 +143,23 @@ namespace Tyuiu.KochetovKO.Sprint5.Task1.V5.Lib
             return Math.Round(result, 2);
         }
 
-        // Метод для форматирования числа согласно ожидаемому формату
-        private string FormatNumber(double number)
-        {
-            // Округляем до 2 знаков после запятой
-            double rounded = Math.Round(number, 2);
-
-            // Если число целое - возвращаем без десятичной части
-            if (Math.Abs(rounded - Math.Round(rounded)) < 0.001)
-            {
-                return Math.Round(rounded).ToString();
-            }
-            else
-            {
-                // Используем CultureInfo.InvariantCulture чтобы точка была разделителем
-                return rounded.ToString("0.00", CultureInfo.InvariantCulture)
-                             .Replace(".", ","); // Заменяем точку на запятую
-            }
-        }
-
-        // Метод для получения таблицы значений
+        // Метод для получения значений функции без сохранения в файл
         public string GetFunctionTable(int startValue, int stopValue)
         {
             StringBuilder table = new StringBuilder();
             table.AppendLine("Таблица значений функции F(x) = 5 - 3x + (1 + sin(x))/(2x - 0.5)");
             table.AppendLine("Диапазон: [" + startValue + "; " + stopValue + "]");
-            table.AppendLine(new string('=', 45));
+            table.AppendLine(new string('=', 40));
             table.AppendLine("   x   |   f(x)   ");
-            table.AppendLine(new string('-', 45));
+            table.AppendLine(new string('-', 40));
 
             for (int x = startValue; x <= stopValue; x++)
             {
                 double y = CalculateFunction(x);
-                string formattedY = FormatNumber(y);
-                table.AppendLine($"  {x,4} | {formattedY,8}");
+                table.AppendLine($"  {x,4} | {y,8:F2}");
             }
 
-            table.AppendLine(new string('=', 45));
+            table.AppendLine(new string('=', 40));
             return table.ToString();
         }
 
@@ -116,29 +175,6 @@ namespace Tyuiu.KochetovKO.Sprint5.Task1.V5.Lib
             }
 
             return values;
-        }
-
-        // Метод для получения результата в том же формате, что ожидается
-        public string GetExpectedOutput(int startValue, int stopValue)
-        {
-            StringBuilder result = new StringBuilder();
-
-            for (int x = startValue; x <= stopValue; x++)
-            {
-                double y = CalculateFunction(x);
-                string strY = FormatNumber(y);
-
-                if (x != stopValue)
-                {
-                    result.AppendLine(strY);
-                }
-                else
-                {
-                    result.Append(strY);
-                }
-            }
-
-            return result.ToString();
         }
     }
 }
