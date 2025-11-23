@@ -35,7 +35,6 @@ namespace Tyuiu.KochetovKO.Sprint5.Task3.V19
             Console.WriteLine("Файл : " + res);
             Console.WriteLine("Создан!");
             Console.ReadKey();
-            Console.ReadKey();
         }
     }
 }

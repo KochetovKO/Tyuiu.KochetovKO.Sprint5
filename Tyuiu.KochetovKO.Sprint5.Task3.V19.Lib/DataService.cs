@@ -9,8 +9,8 @@ namespace Tyuiu.KochetovKO.Sprint5.Task3.V19.Lib
         public string SaveToFileTextData(int x)
         {
 
-            string path = Path.GetTempFileName();
-
+            string path = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
+            
             double y;
            
             y = (2 * x * x - 1) / Math.Sqrt(x * x - 2);
