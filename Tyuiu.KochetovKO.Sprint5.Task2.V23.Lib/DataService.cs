@@ -1,54 +1,68 @@
 ﻿using System;
 using System.IO;
+using System.Data.Common;
 using tyuiu.cources.programming.interfaces.Sprint5;
-
 namespace Tyuiu.KochetovKO.Sprint5.Task2.V23.Lib
 {
     public class DataService : ISprint5Task2V23
     {
         public string SaveToFileTextData(int[,] matrix)
         {
-            // полный путь (можно оставить просто имя файла, если так требуют)
-            string path = Path.Combine(Directory.GetCurrentDirectory(), "OutPutFileTask2.txt");
+            string path =  Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "OutPutFileTask2.csv");
 
-            if (File.Exists(path))
+
+            FileInfo fileinfo = new FileInfo(path);
+            bool FileExists = fileinfo.Exists;
+
+            if (FileExists)
             {
                 File.Delete(path);
             }
 
             int rows = matrix.GetUpperBound(0) + 1;
-            int columns = matrix.Length / rows;
+            int colums = matrix.Length / rows;
 
-            // сначала меняем нечётные на 0
             for (int i = 0; i < rows; i++)
             {
-                for (int j = 0; j < columns; j++)
+                for (int j = 0; j < colums; j++)
                 {
                     if (matrix[i, j] % 2 != 0)
                     {
                         matrix[i, j] = 0;
                     }
                 }
+                        
             }
-
-            // потом записываем в файл
+            string str = "";
             for (int i = 0; i < rows; i++)
             {
-                string str = "";
-
-                for (int j = 0; j < columns; j++)
+                for (int j = 0; j < colums; j++)
                 {
-                    if (j != columns - 1)
-                        str += matrix[i, j] + ";";
-                    else
-                        str += matrix[i, j];
-                }
+                    if (j != colums - 1)
+                    {
+                        str = str + matrix[i, j] + ";";
 
+                    }
+                    else
+                    {
+                        str = str + matrix[i, j];
+                    }
+                    
+                
+                
+                }
                 if (i != rows - 1)
+                {
                     File.AppendAllText(path, str + Environment.NewLine);
+                }
                 else
+                {
                     File.AppendAllText(path, str);
+                }
+                str = "";
+            
             }
+
 
             return path;
         }
