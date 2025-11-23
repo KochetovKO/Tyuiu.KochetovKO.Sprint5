@@ -6,8 +6,8 @@ namespace Tyuiu.KochetovKO.Sprint5.Task1.V5.Lib
     {
         public string SaveToFileTextData(int startValue, int stopValue)
         {
-            string path = $@"{Directory.GetCurrentDirectory()} \OutPutFileTask1.txt";
-            
+            string path = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
+
             FileInfo fileinfo = new FileInfo(path);
             bool FileExists = fileinfo.Exists;
 
