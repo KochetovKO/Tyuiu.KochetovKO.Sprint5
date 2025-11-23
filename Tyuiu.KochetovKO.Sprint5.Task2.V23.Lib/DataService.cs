@@ -8,7 +8,7 @@ namespace Tyuiu.KochetovKO.Sprint5.Task2.V23.Lib
     {
         public string SaveToFileTextData(int[,] matrix)
         {
-            string path =  Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "OutPutFileTask2.csv");
+            string path = Path.ChangeExtension(Path.GetTempFileName(), ".csv");
 
 
             FileInfo fileinfo = new FileInfo(path);
