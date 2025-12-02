@@ -10,7 +10,7 @@ namespace Tyuiu.KochetovKO.Sprint5.Task5.V3
         {
             DataService ds = new DataService();
             Console.Title = "Спринт #5 | Выполнил: Кочентов К. О. | ИИПб-23-1";
-            Console.WriteLine("***************************************************************************");
+            Console.WriteLine("***************************************************************************"); 
             Console.WriteLine("* Спринт #5                                                               *");
             Console.WriteLine("* Тема: Класс File. Запись набора данных в текстовый файл                *");
             Console.WriteLine("* Задание #5                                                              *");
