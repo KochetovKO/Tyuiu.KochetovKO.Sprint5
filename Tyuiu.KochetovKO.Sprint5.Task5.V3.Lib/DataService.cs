@@ -7,7 +7,7 @@ namespace Tyuiu.KochetovKO.Sprint5.Task5.V3.Lib
 {
     public class DataService : ISprint5Task5V3
     {
-        public double LoadFromDataFile(string path)
+        public double LoadFromDataFile(string path) 
         {
             double res = 0;
             using (StreamReader reader = new StreamReader(path))
