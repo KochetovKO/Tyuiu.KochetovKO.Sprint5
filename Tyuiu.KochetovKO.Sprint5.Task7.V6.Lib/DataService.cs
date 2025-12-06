@@ -9,7 +9,7 @@ namespace Tyuiu.KochetovKO.Sprint5.Task7.V6.Lib
     {
         public string LoadDataAndSave(string path)
         {
-            string pathSaveFile = Path.Combine(Path.GetTempPath(), "InPutDataFileTask7V6.txt");
+            string pathSaveFile = Path.Combine(Path.GetTempPath(), "InPutDataFileTask7V6.txt"); 
             string outText = "";
             string alp = "[a-z]";
 
