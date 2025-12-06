@@ -1,15 +1,13 @@
-﻿using System;
+﻿using tyuiu.cources.programming.interfaces.Sprint5;
 using System.IO;
-using System.Text;
 using System.Text.RegularExpressions;
-using tyuiu.cources.programming.interfaces.Sprint5;
 namespace Tyuiu.KochetovKO.Sprint5.Task7.V6.Lib
 {
-    public class DataService : ISprint5Task7V6 
+    public class DataService : ISprint5Task7V6
     {
         public string LoadDataAndSave(string path)
         {
-            string pathSaveFile = Path.Combine(Path.GetTempPath(), "InPutDataFileTask7V6.txt"); 
+            string pathSaveFile = Path.Combine(Path.GetTempPath(), "InPutDataFileTask7V6.txt");
             string outText = "";
             string alp = "[a-z]";
 
@@ -30,6 +28,7 @@ namespace Tyuiu.KochetovKO.Sprint5.Task7.V6.Lib
                 File.AppendAllText(pathSaveFile, outText);
                 return pathSaveFile;
             }
+
 
 
         }
