@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using tyuiu.cources.programming.interfaces.Sprint5;
 namespace Tyuiu.KochetovKO.Sprint5.Task7.V6.Lib
 {
@@ -8,34 +9,27 @@ namespace Tyuiu.KochetovKO.Sprint5.Task7.V6.Lib
     {
         public string LoadDataAndSave(string path)
         {
-            string inputData = File.ReadAllText(path);
-            StringBuilder processedData = new StringBuilder();
+            string pathSaveFile = Path.Combine(Path.GetTempPath(), "InPutDataFileTask7V6.txt");
+            string outText = "";
+            string alp = "[a-z]";
 
-            foreach (char c in inputData)
+            FileInfo fileInfo = new FileInfo(path);
+            bool fileExists = fileInfo.Exists;
+
+            if (fileExists)
             {
-                if (char.IsLetter(c) && ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')))
-                {
-                    processedData.Append('#');
-                }
-                else
-                {
-                    processedData.Append(c);
-                }
+                File.Delete(pathSaveFile);
             }
-
-            string outputPath = Path.Combine(Path.GetTempPath(), "OutPutDataFileTask7V6.txt");
-
-            string directory = Path.GetDirectoryName(outputPath);
-            if (!Directory.Exists(directory))
+            using (StreamReader reader = new StreamReader(path))
             {
-                Directory.CreateDirectory(directory);
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    outText += Regex.Replace(line, alp, "#", RegexOptions.IgnoreCase);
+                }
+                File.AppendAllText(pathSaveFile, outText);
+                return pathSaveFile;
             }
-
-            File.WriteAllText(outputPath, processedData.ToString());
-
-            return processedData.ToString();
-
-
 
 
         }

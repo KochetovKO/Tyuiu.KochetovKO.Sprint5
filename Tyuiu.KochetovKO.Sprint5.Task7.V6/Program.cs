@@ -6,6 +6,9 @@ namespace Tyuiu.KochetovKo.Sprint5.Task7.V6
     {
         static void Main(string[] args)
         {
+            DataService ds = new DataService();
+            string path = @"C:\DataSprint5\InPutDataFileTask7V6.txt";
+            string pathSaveFile = @"C:\DataSprint5\InPutDataFileTask7V6.txt";
             Console.Title = "Спринт #5 | Выполнил: Кочетов Кирилл Олегович | ИсПБ-25-1";
             Console.WriteLine("***************************************************************************");
             Console.WriteLine("* Спринт #5                                                               *");
@@ -16,26 +19,17 @@ namespace Tyuiu.KochetovKo.Sprint5.Task7.V6
             Console.WriteLine("***************************************************************************");
             Console.WriteLine("* УСЛОВИЕ:                                                                *");
 
-            Console.WriteLine("*Дан файл С:\\DataSprint5\\InPutDataFileTask7V6.txt (файл взять из архива со*");
-            Console.WriteLine("*огласно вашему варианту. Создать папку в ручную С:\\DataSprint5\\ и скопиро*");
-            Console.WriteLine("*овать в неё файл) в котором есть набор символьных данных.Заменить все лат*");
-            Console.WriteLine("*тинские буквы на #.Полученный результат сохранить в файл OutPutDataFileTa*");
-            Console.WriteLine("*ask7V6.txt.                                                              *");
 
-            Console.WriteLine("*                                                                         *");
-            Console.WriteLine("***************************************************************************");
-            Console.WriteLine("* ИСХОДНЫЕ ДАННЫЕ:                                                        *");
-            Console.WriteLine("***************************************************************************");
-
-            string inputpath = @"C:\DataSprint5\InPutDataFileTask7V6.txt";
-            DataService ds = new DataService();
-            string result = ds.LoadDataAndSave(inputpath);
-
-            Console.WriteLine("***************************************************************************");
+            Console.WriteLine(" ***************************************************************************");
             Console.WriteLine("* РЕЗУЛЬТАТ:                                                              *");
             Console.WriteLine("***************************************************************************");
+            Console.WriteLine("Находится в файле: ");
+            pathSaveFile = ds.LoadDataAndSave(path);
+            Console.WriteLine(pathSaveFile);
 
-            Console.WriteLine(result);
+            Console.ReadKey();
+
+
             Console.ReadKey();
         }
     }
