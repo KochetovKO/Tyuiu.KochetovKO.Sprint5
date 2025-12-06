@@ -6,7 +6,7 @@ namespace Tyuiu.kochetovKO.Sprint5.Task7.V6
         static void Main(string[] args)
         {
             DataService ds = new DataService();
-            string path = @"C:\DataSprint5\InPutDataFileTask7V6.txt";
+            string path = @"C:\DataSprint5\InPutDataFileTask7V6.txt"; 
             string pathSaveFile = @"C:\DataSprint5\InPutDataFileTask7V6.txt";
             Console.Title = "Спринт #5 | Выполнил: Кочетов К.О. | ИСПБ-25-1";
             Console.WriteLine("***************************************************************************");
